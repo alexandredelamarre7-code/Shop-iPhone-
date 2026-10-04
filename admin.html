@@ -1,0 +1,11 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — DELAMARRE STORE</title>
+<style>body{font-family:Arial;margin:0;background:#f5f5f7;color:#111}.wrap{max-width:900px;margin:auto;padding:25px}.box{background:white;border-radius:18px;padding:20px;margin:15px 0}input{padding:12px;margin:6px 0;width:100%;border:1px solid #ddd;border-radius:9px}button{padding:12px 16px;border:0;border-radius:10px;background:#111;color:white;cursor:pointer}.product{border-top:1px solid #eee;padding:15px 0}.danger{background:#c62828}.muted{color:#666}</style></head><body><div class="wrap"><h1>Administration</h1><p class="muted">Cette page est le panneau de gestion. La version connectée à une base de données sera activée après la configuration indiquée dans README.</p>
+<div class="box"><h2>Ajouter un produit</h2><input id="pname" placeholder="Nom du produit"><input id="pprice" type="number" placeholder="Prix (€)"><input id="pimage" placeholder="URL de la photo"><button onclick="add()">Ajouter</button></div>
+<div class="box"><h2>Produits</h2><div id="list"></div></div></div>
+<script>
+let key="admin_products";let products=JSON.parse(localStorage.getItem(key)||"null")||[
+{id:"ip16-256-blue",name:"iPhone 16 256 Go — Ultramarine",price:649,image:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=470&hei=556&fmt=png-alpha&.v=1724861043696"}];
+function render(){list.innerHTML=products.map((p,i)=>`<div class="product"><b>${p.name}</b> — ${p.price} €<br><small>${p.image}</small><br><button class="danger" onclick="del(${i})">Supprimer</button></div>`).join("")}
+function add(){let n=pname.value.trim(),pr=Number(pprice.value),im=pimage.value.trim();if(!n||!pr||!im)return alert("Remplis les 3 champs.");products.push({id:Date.now().toString(),name:n,price:pr,image:im});localStorage.setItem(key,JSON.stringify(products));pname.value=pprice.value=pimage.value="";render()}
+function del(i){products.splice(i,1);localStorage.setItem(key,JSON.stringify(products));render()}render();
+</script></body></html>
